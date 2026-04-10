@@ -31,23 +31,35 @@ function renderTasks() {
         div.style.marginTop = "10px";
         div.style.padding = "10px";
         div.style.background = "#4e8c9c54";
-        div.style.borderRadius = "10px";
-        div.style.alignItems = "center";
+        div.style.borderRadius = "10px"
+        div.style.alignItems= "center";
 
         div.innerHTML = `
-            <span>${task.text}</span>
+                <span style="text-decoration:${task.completed ? 'line-through' : 'none'}">
+                    ${task.text}
+                </span>
 
-            <div>
-                <button onclick="doneTask(${index})" class="btn-done">
-                    Done
-                </button>
+                <div>
+                    <button onclick="toggleTask(${index})" class="${task.completed ? 'btn-undo' : 'btn-done'}">
+                        ${task.completed ? "Undo" : "Done"}
+                    </button>
 
-                <button onclick="deleteTask(${index})" class="btn-delete">
-                    Delete
-                </button>
-            </div>
-        `;
-
+                    <button onclick="deleteTask(${index})" class="btn-delete">
+                        Delete
+                    </button>
+                </div>
+        `;         
         taskList.appendChild(div);
     });
+        updateStats();
+};
+
+function deleteTask(index) {
+    tasks.splice(index, 1);
+    renderTasks();
+}
+
+function toggleTask(index) {
+    tasks[index].completed = !tasks[index].completed;
+    renderTasks();
 }
